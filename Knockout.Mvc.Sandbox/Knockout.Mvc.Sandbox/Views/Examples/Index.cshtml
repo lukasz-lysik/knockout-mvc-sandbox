@@ -1,0 +1,65 @@
+﻿@using PerpetuumSoft.Knockout
+@model Knockout.Mvc.Sandbox.Models.ExamplesIndexViewModel
+           
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ko = Html.CreateKnockoutContext();
+}
+
+<table>
+@foreach (var req in Model.Requirements)
+{
+    <tr>
+        <td>@req.Description</td>
+        <td>@Html.RadioButton("req-" + req.Id, true, false) Tak</td>
+        <td>@Html.RadioButton("req-" + req.Id, false, true) Nie</td>
+    </tr>
+}
+</table>
+
+<a href="#" onclick="CheckIfAllAreTrue();">Sprawdź</a>
+
+<script type="text/javascript">
+    function CheckIfAllAreTrue() {
+
+        var total = 0;
+        var yes = 0;
+
+        var answers = {};
+
+        $('input[type=radio]').each(function () {
+            if ($(this).attr('checked')) {
+                answers[$(this).attr('name')] = ($(this).val().toLowerCase() === 'true');
+            }
+        });
+
+        $.each(answers, function (index, value) {
+            total++;
+            if (value) {
+                yes++;
+            }
+        });
+
+        console.log(answers);
+        console.log('Total: ' + total);
+        console.log('Yes: ' + yes);
+//        var names = {};
+
+//        $('input:radio').each(function () { // find unique names
+//            names[$(this).attr('name')] = true;
+//        });
+
+//        var count = 0;
+//        $.each(names, function () { // then count them
+//            count++;
+//        });
+
+//        if ($('input:radio:checked').length == count) {
+//            // all questions answered
+//        }
+
+        return false;
+    }
+</script>
+@ko.Apply(Model)
